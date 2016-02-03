@@ -23,24 +23,6 @@ int  MAX_SAMPLES = 16; //32
 layout (location=0) out vec4 result;
 
 void main(void) {
-	/*
-		vec2 texelSize = 1.0 / vec2(textureSize(uTexInput, 0));
-		vec2 screenTexCoords = gl_FragCoord.xy * texelSize;
-
-		vec2 velocity = texture(uTexVelocity, screenTexCoords).rg * 2.0f - 1.0f;
-		velocity *= uVelocityScale;
-
-		float speed = length(velocity / texelSize);
-		int nSamples = clamp(int(speed), 1, MAX_SAMPLES);
-		
-		oResult = texture(uTexInput, screenTexCoords);
-		for (int i = 1; i < nSamples; ++i) 
-		{
-			vec2 offset = velocity * (float(i) / float(nSamples - 1) - 0.5);
-			oResult += texture(uTexInput, screenTexCoords + offset);
-		}
-		oResult /= float(nSamples);
-	*/
 		
 		vec2 velocity = texture(uTexVelocity, texture_coordinate).rg * 2.0 - 1.0;
 		velocity *= uVelocityScale;

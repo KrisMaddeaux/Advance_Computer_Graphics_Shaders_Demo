@@ -38,31 +38,14 @@ uniform sampler2DShadow shadowMap4;
 
 uniform int numLights; 
 
-//varying in vec3 P;
-//varying in vec3 N;
-//varying in vec4 lightP;
-//
-//varying in vec4 colorTest; 
-//
-//varying in vec3 lightPos[MAX_LIGHTS];
-//
-//varying in vec4 currentPosition;
-//varying in vec4 previousPosition;
-
 in vec3 P;
 in vec3 N;
 in vec4 lightP;
-
-//in vec4 colorTest; 
-
-//in vec3 lightPos[MAX_LIGHTS];
 
 in vec4 currentPosition;
 in vec4 previousPosition;
 
 uniform float enableLight;
-
-//varying in float depth; //the z value of the current position in clip space
 
 layout (location=0) out vec4 fragColour0; //the color of the scene
 layout (location=1) out vec4 fragColour1;	//verlocity buffer							//linear depth of the scene
@@ -120,118 +103,6 @@ float ShadowBlur(in sampler2DShadow img, in vec4 centerUV, vec2 pixel, int sampl
 	shadow /= counter;
 
 	return shadow;
-
-
-
-
-/*
-	int numSamples = samples; 
-	float totalSample = 0.0f;
-	//float fWidth = 8.0f / 2000.0f; //width; //0.003f; //0.1f
-	float fWidth = width;
-	//vec2 jxyScale = vec2(1.0f/32.0f, 1.0f/32.0f); 
-	vec2 jxyScale = vec2(16.0f, 16.0f); 
-
-	float fsize = centerUV.w * fWidth;
-	vec3 jcoord = vec3(gl_FragCoord.xy  * centerUV.xy * jxyScale, 0);
-	vec4 smCoord = centerUV; 
-
-	//take cheap test samples first
-
-	for(int i = 0; i < 4; i++)
-	{
-		vec4 offset = texture(jitter, jcoord);
-		jcoord.z += 1.0f / (numSamples / 2);
-
-		smCoord.xy = offset.xy * fsize + centerUV.xy;
-		totalSample += textureProj(img, smCoord) / 8;
-
-		smCoord.xy = offset.zw * fsize + centerUV.xy;
-		totalSample += textureProj(img, smCoord) / 8;
-	}
-
-	//vec3 lightPos =  gameLights[0].position.xyz;
-	//vec3 L = normalize(lightPos - P);
-
-	//float NdotL = max(dot(N,L),0);
-
-// if all the test samples are zeroes or ones, we skip expensive shadow-map filtering
-	float test = (totalSample - 1) * totalSample; 
-	if(test > 0.15f || test < -0.15f)
-	{
-		totalSample *= 1.0f / 8; 
-
-		//return 100.0f; 
-
-		for(int i = 0; i < (numSamples / 2) - 4; i++)
-		{
-			vec4 offset = texture(jitter, jcoord);
-			jcoord.z += 1.0f / (numSamples / 2);
-
-			smCoord.xy = offset.xy * fsize + centerUV.xy;
-			totalSample += textureProj(img, smCoord)* (1.0f / numSamples);
-
-			smCoord.xy = offset.zw * fsize + centerUV.xy;
-			totalSample += textureProj(img, smCoord)* (1.0f / numSamples);
-		}
-		return totalSample; 
-	}
-	else
-	{
-		float currentSample = texture(img, centerUV.xyz);
-		//return currentSample;
-		return 100;
-	}
-*/
-
-/*
-	//return texture(img, centerUV).rgb; 
-
-	vec2 offsetUV; 
-
-//*****apply a 2D Gaussian filter*****
-	
-	float totalSample = (0.25f) *  texture(img, centerUV);
-
-	//NEIGHBORS
-	//**3rd Row***
-		//1st
-		offsetUV =  vec2(-1, -1) * pixel; 
-		totalSample += (0.0625f) *  texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-		//2nd
-		offsetUV.x += pixel.x; 
-		totalSample += (0.125f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-		//3rd
-		offsetUV.x += pixel.x; 
-		totalSample += (0.0625f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-	//**2nd row**
-		//1st
-		offsetUV.x += pixel.y; 
-		totalSample += (0.125f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-		//2nd
-		offsetUV.x -= pixel.x;  //current pixel (skip)
-		offsetUV.x -= pixel.x; 
-		totalSample += (0.125f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-	//**3rd row**
-		//1st
-		offsetUV.y += pixel.y; 
-		totalSample += (0.0625f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-		//2nd
-		offsetUV.x += pixel.x; 
-		totalSample += (0.125f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-		//3rd
-		offsetUV.x += pixel.x;
-		totalSample += (0.0625f) * texture(img, centerUV + vec3(offsetUV.x, offsetUV.y, 0.0f)); 
-
-		*/
-	//return totalSample; 
 }
 
 float ShadowNoBlur(in sampler2DShadow img, in vec4 centerUV, vec2 pixel)
